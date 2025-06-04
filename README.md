@@ -1,0 +1,1 @@
+This application is used to calculate AI confidence score whether to approve /reject license requests based on userinsights example Usage and criticality of applications as part of yearly activity process.
