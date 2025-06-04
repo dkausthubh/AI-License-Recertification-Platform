@@ -1,0 +1,392 @@
+﻿@{
+    ViewData["Title"] = "AI Insights Dashboard";
+}
+<h1>@ViewData["Title"]</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yAI Insights</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="summary">
+<div class="summary-card">
+<i class="fas fa-boxes" style="font-size: 2.5rem; color: #3498db;"></i>
+<h3>142</h3>
+<p>Total Applications</p>
+</div>
+<div class="summary-card">
+<i class="fas fa-key" style="font-size: 2.5rem; color: #2ecc71;"></i>
+<h3>607</h3>
+<p>Total Licenses</p>
+</div>
+<div class="summary-card">
+<i class="fas fa-coins" style="font-size: 2.5rem; color: #f39c12;"></i>
+<h3>$12,580</h3>
+<p>Total Cost Savings</p>
+</div>
+<div class="summary-card">
+<i class="fas fa-brain" style="font-size: 2.5rem; color: #9b59b6;"></i>
+<h3>87%</h3>
+<p>Avg Confidence Score</p>
+</div>
+</div>
+
+<div class="dashboard-container">
+<div class="card">
+<div class="card-header">
+<div class="icon">
+<i class="fas fa-chart-pie"></i>
+</div>
+<h2>Application Status</h2>
+</div>
+<div class="chart-title">Distribution with Usage Types</div>
+<div class="chart-container">
+<canvas id="appPieChart"></canvas>
+</div>
+<div class="stats-container">
+<div class="stat-card">
+<p>High Usage Apps</p>
+<h3>89</h3>
+</div>
+<div class="stat-card warning">
+<p>Low Usage Apps</p>
+<h3>53</h3>
+</div>
+<div class="stat-card">
+<p>Avg Confidence</p>
+<h3>87%</h3>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div class="icon">
+<i class="fas fa-chart-bar"></i>
+</div>
+<h2>License Utilization</h2>
+</div>
+<div class="chart-title">License Metrics with Usage Analysis</div>
+<div class="chart-container">
+<canvas id="licenseBarChart"></canvas>
+</div>
+<div class="stats-container">
+<div class="stat-card">
+<p>Licenses Available</p>
+<h3>320</h3>
+</div>
+<div class="stat-card">
+<p>Licenses Used</p>
+<h3>245</h3>
+</div>
+<div class="stat-card revoked">
+<p>Licenses Revoked</p>
+<h3>42</h3>
+</div>
+<div class="stat-card cost">
+<p>Cost Saved</p>
+<h3>$12,580</h3>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div class="icon">
+<i class="fas fa-table"></i>
+</div>
+<h2>Usage Analysis</h2>
+</div>
+<div class="chart-title">Application Usage Types with Confidence Scores</div>
+
+<table class="usage-table">
+<thead>
+<tr>
+<th>Application</th>
+<th>Status</th>
+<th>Usage Type</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payroll System</td>
+<td>Recertified</td>
+<td><span class="usage-high">High</span></td>
+<td><span class="confidence-high">94%</span></td>
+</tr>
+<tr>
+<td>HR Portal</td>
+<td>Pending Recert</td>
+<td><span class="usage-high">High</span></td>
+<td><span class="confidence-high">92%</span></td>
+</tr>
+<tr>
+<td>Expense Tracker</td>
+<td>Recertified</td>
+<td><span class="usage-high">High</span></td>
+<td><span class="confidence-high">96%</span></td>
+</tr>
+<tr>
+<td>Inventory System</td>
+<td>Needs Review</td>
+<td><span class="usage-low">Low</span></td>
+<td><span class="confidence-medium">85%</span></td>
+</tr>
+<tr>
+<td>CRM Platform</td>
+<td>Recertified</td>
+<td><span class="usage-high">High</span></td>
+<td><span class="confidence-high">93%</span></td>
+</tr>
+<tr>
+<td>Analytics Dashboard</td>
+<td>Pending Recert</td>
+<td><span class="usage-low">Low</span></td>
+<td><span class="confidence-medium">82%</span></td>
+</tr>
+<tr>
+<td>Email Client</td>
+<td>Retired</td>
+<td><span class="usage-low">Low</span></td>
+<td><span class="confidence-high">97%</span></td>
+</tr>
+<tr>
+<td>Document Manager</td>
+<td>Recertified</td>
+<td><span class="usage-high">High</span></td>
+<td><span class="confidence-high">91%</span></td>
+</tr>
+</tbody>
+</table>
+
+<div class="stats-container">
+<div class="stat-card usage-high">
+<p>High Frequency Apps</p>
+<h3>89</h3>
+</div>
+<div class="stat-card">
+<p>Low Frequency Apps</p>
+<h3>53</h3>
+</div>
+<div class="stat-card">
+<p>Avg Usage Confidence</p>
+<h3>92%</h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<p><i class="fas fa-sync-alt"></i> SARBIS Dashboard | <i class="fas fa-database"></i> Data Source: OneCert </p>
+</div>
+
+<script>
+// Initialize charts
+document.addEventListener('DOMContentLoaded', function() {
+// Pie Chart for Application Status
+const appCtx = document.getElementById('appPieChart').getContext('2d');
+const appPieChart = new Chart(appCtx, {
+type: 'doughnut',
+data: {
+labels: ['Recertified', 'Pending Recert', 'Needs Review', 'Retired'],
+datasets: [{
+data: [67, 38, 22, 15],
+backgroundColor: [
+'#2ecc71',
+'#f39c12',
+'#3498db',
+'#95a5a6'
+],
+borderWidth: 0,
+hoverOffset: 15
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+position: 'bottom',
+labels: {
+padding: 20,
+font: {
+size: 13,
+family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+},
+usePointStyle: true,
+pointStyle: 'circle'
+}
+},
+tooltip: {
+backgroundColor: 'rgba(44, 62, 80, 0.9)',
+titleFont: {
+size: 14,
+weight: 'bold'
+},
+bodyFont: {
+size: 13
+},
+padding: 12,
+callbacks: {
+label: function(context) {
+const label = context.label || '';
+const value = context.raw || 0;
+const total = context.dataset.data.reduce((a, b) => a + b, 0);
+const percentage = Math.round((value / total) * 100);
+return `${label}: ${value} apps (${percentage}%)`;
+},
+afterLabel: function(context) {
+// Simulate confidence score per category
+const confidences = {
+'Recertified': 92,
+'Pending Recert': 85,
+'Needs Review': 78,
+'Retired': 95
+};
+return `Confidence: ${confidences[context.label] || 90}%`;
+}
+}
+}
+},
+cutout: '65%'
+}
+});
+
+// Bar Chart for License Metrics
+const licenseCtx = document.getElementById('licenseBarChart').getContext('2d');
+const licenseBarChart = new Chart(licenseCtx, {
+type: 'bar',
+data: {
+labels: ['Available', 'Used', 'Revoked', 'Cost Saved'],
+datasets: [{
+label: 'License Count',
+data: [320, 245, 42, 0],
+backgroundColor: '#3498db',
+borderWidth: 0,
+borderRadius: 8,
+order: 2
+}, {
+label: 'Cost Savings',
+data: [0, 0, 0, 12580],
+backgroundColor: '#27ae60',
+borderWidth: 0,
+borderRadius: 8,
+type: 'bar',
+yAxisID: 'y1',
+order: 1
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: true,
+title: {
+display: true,
+text: 'License Count',
+font: {
+size: 13,
+weight: 'bold'
+},
+padding: {top: 10, bottom: 10}
+},
+grid: {
+color: 'rgba(0, 0, 0, 0.05)'
+}
+},
+y1: {
+beginAtZero: true,
+position: 'right',
+grid: {
+drawOnChartArea: false,
+},
+title: {
+display: true,
+text: 'Cost Savings ($)',
+font: {
+size: 13,
+weight: 'bold'
+},
+padding: {top: 10, bottom: 10}
+},
+ticks: {
+callback: function(value) {
+if (value >= 1000) {
+return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+} else {
+return '$' + value;
+}
+}
+}
+},
+x: {
+grid: {
+display: false
+}
+}
+},
+plugins: {
+legend: {
+position: 'top',
+labels: {
+font: {
+size: 13,
+family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+},
+usePointStyle: true,
+padding: 20
+}
+},
+tooltip: {
+backgroundColor: 'rgba(44, 62, 80, 0.9)',
+titleFont: {
+size: 14,
+weight: 'bold'
+},
+bodyFont: {
+size: 13
+},
+padding: 12,
+callbacks: {
+label: function(context) {
+let label = context.dataset.label || '';
+if (label) {
+label += ': ';
+}
+if (context.datasetIndex === 1) {
+label += '$' + context.raw.toLocaleString();
+} else {
+label += context.raw;
+}
+return label;
+},
+afterLabel: function(context) {
+// Simulate confidence score per license category
+const confidences = {
+'Available': 88,
+'Used': 85,
+'Revoked': 92,
+'Cost Saved': 90
+};
+return `Confidence: ${confidences[context.label] || 90}%`;
+},
+title: function(tooltipItems) {
+return tooltipItems[0].label;
+}
+}
+}
+}
+}
+});
+});
+</script>
+</body>
+</html>
