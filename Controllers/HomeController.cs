@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using HackathonPOC.Models;
+using AILicenseRecertification.Models;
 using System.Configuration;
 using Microsoft.VisualBasic;
 
 
-namespace HackathonPOC.Controllers;
+namespace AILicenseRecertification.Controllers;
 
 public class HomeController : Controller
 {

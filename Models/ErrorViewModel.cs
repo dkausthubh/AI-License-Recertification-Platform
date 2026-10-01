@@ -1,4 +1,4 @@
-namespace HackathonPOC.Models;
+namespace AILicenseRecertification.Models;
 
 public class ErrorViewModel
 {
