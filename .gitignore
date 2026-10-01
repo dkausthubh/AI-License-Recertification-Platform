@@ -1,0 +1,38 @@
+# .NET build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+
+# Logs
+*.log
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration
+appsettings.Local.json
+appsettings.Development.local.json
+
+# Azure publish profiles
+*.publishsettings
+
+# Test results
+TestResults/
+
+# OS files
+.DS_Store
+Thumbs.db
